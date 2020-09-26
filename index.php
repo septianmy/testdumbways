@@ -19,14 +19,16 @@
 
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <link rel="stylesheeet" hre="style.css">
+    <link rel="stylesheet" href="style.css">
  </head>
-<body style="background-color:black">
+<body>
     <div class="header mb-5">
         <div class="container">
-            <div class="row">
-                <div class="col text-light">DW-Imcomp</div>
-                <div class="col">
+            <div class="row p-4">
+                <div class="col logo text-light">
+                  <b><font color="white">DW-</font><font color="red">Bicycle</font></b>
+                </div>
+                <div class="col text-right">
                     <a href="importir.php" type="button" class="btn btn-danger">Data Importir</a>
                     <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#addImportirForm">
                         Add Importir
@@ -40,10 +42,13 @@
     </div>
     <!-- notifikasi -->
     <?php if(isset($_SESSION['response'])) {?>
-        <div class="alert alert-<?= $_SESSION['res_type']; ?> alert-dismissible text-center">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-            <b><?= $_SESSION['response'];?></b>        
-        </div>           
+        <div class="container">
+            <div class="alert alert-<?= $_SESSION['res_type']; ?> alert-dismissible text-center">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <b><?= $_SESSION['response'];?></b>        
+            </div> 
+        </div>
+                 
     <?php } unset($_SESSION['response']);?>
 
     <!-- Modal Form Add Importir -->
@@ -169,7 +174,7 @@
     <!-- end of Form Add Importir -->
 
     <div class="container">
-        <div class="card-deck">
+        <div class="row">
         <?php 
             $query = "SELECT * FROM product_tb INNER JOIN importir_tb where product_tb.importir_id = importir_tb.id ";
             $stmt=$conn->prepare($query);
@@ -177,16 +182,25 @@
             $result=$stmt->get_result();
             while($row = $result->fetch_array()) 
             { 
+                $productimportir = substr($row[7], 0, 9)."...";
+                $price = number_format($row[5], 0, ',', '.');
          ?>
-            <div class="card p-2">
-                <img src="<?= $row['photo'];?>" height="150px" class="card-img-top" style="justify-self:center"alt="product-image">
-                <h7 class="card-title product-name"><?= $row[1];?></h7><h6><?= $row[7];?></h6>
-                <p class="card-text product-stock">Stock :<?= $row[4];?></p>
-                <p class="card-text">Rp <?= $row[5];?></small></p>
-                <a href="#viewProduct" class="btn btn-primary mb-2" data-toggle="modal" data-id ="<?= $row['0'];?>">View Detail</a>
-                <a href="#editProduct" class="btn btn-success mb-2" data-toggle="modal" data-id ="<?= $row['0'];?>">Edit</a>
-                <a href="action.php?delete=<?= $row['0'];?>" class="btn btn-danger " onclick="return confirm('Do you want to delete this record ? \n Product Name : <?= $row['1']?> ');">Delete</a>
+            <div class="col-md-3">
+                <div class="card p-2 card-product">
+                    <img src="<?= $row['photo'];?>" width="100%" height="180px" class="card-img-bottom" alt="product-image">
+                    <div class="row">
+                        <div class="col productname text-light"><b><?= $row[1];?></b></div>
+                        <div class="col product-importir text-right"><?= $productimportir;?></div>
+                    </div>
+                    <div class="row">
+                        <div class="col product-price text-danger"><b>Rp. <?= $price;?></b></div>
+                        <div class="col product-stock text-right">Stock : <?= $row[4];?></div>
+                    </div>
+                    <a href="#viewProduct" class="btn btn-primary mb-2" data-toggle="modal" data-id ="<?= $row['0'];?>">View Detail</a>
+                    <a href="#editProduct" class="btn btn-success mb-2" data-toggle="modal" data-id ="<?= $row['0'];?>">Edit</a>
+                    <a href="action.php?delete=<?= $row['0'];?>" class="btn btn-danger " onclick="return confirm('Do you want to delete this record ? \n Product Name : <?= $row['1']?> ');">Delete</a>
                 </div>
+            </div>
             <?php } ?>
         </div>
     </div>

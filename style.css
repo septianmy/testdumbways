@@ -1,0 +1,21 @@
+body {
+    background-color: black;
+}
+
+.logo {
+    font-size: 30px;
+}
+.card-product {
+    background-color: #444444;
+}
+
+.product-importir, .product-stock {
+    color:#ccc;
+}
+.product-importir {
+    font-size: 15px;;
+}
+
+.product-price {
+    font-size: 15px;
+}
